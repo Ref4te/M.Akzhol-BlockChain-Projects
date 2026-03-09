@@ -1,0 +1,15 @@
+# Зависимости
+node_modules/
+
+# Секретные данные (ключи от кошельков, API-ключи Infura/Alchemy)
+.env
+
+# Артефакты компиляции Solidity
+*.abi
+*.bin
+
+# Логи npm
+npm-debug.log*
+
+# Системные файлы
+.DS_Store
