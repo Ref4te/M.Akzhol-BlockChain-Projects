@@ -159,6 +159,9 @@ function onGameFinished(data) {
     showResult(res, data.payout);
     updateStats();
     
+    // ДОБАВЛЯЕМ В ИСТОРИЮ
+    addHistoryItem(data, res);
+
     refreshUserData(15000); 
     
     playing = false;
@@ -167,6 +170,30 @@ function onGameFinished(data) {
 }
 
 /* Вспомогательные функции UI и анимаций */
+
+// Добавление записи в историю транзакций
+function addHistoryItem(data, res) {
+    const list = $("historyList");
+    const section = $("historySection");
+    
+    // Показываем секцию, если это первая игра
+    if (section.style.display === "none") section.style.display = "block";
+
+    const item = document.createElement("div");
+    item.className = "history-item";
+    
+    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const resClass = res === "win" ? "pos" : res === "lose" ? "neg" : "neu";
+    const resText = res === "win" ? "Победа" : res === "lose" ? "Проигрыш" : "Ничья";
+
+    item.innerHTML = `
+        <span>${time} — ${resText}</span>
+        <span class="${resClass}">${res === "win" ? "+" + data.payout : "0.00"} BNB</span>
+    `;
+
+    // Добавляем новую запись в начало списка
+    list.prepend(item);
+}
 
 // Блокировка интерфейса
 function setUIState(isDisabled) {
