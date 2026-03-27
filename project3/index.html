@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>КНБ Арена — Камень Ножницы Бумага на ставках</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1><span class="cyan">КНБ</span> <span class="pink">АРЕНА</span></h1>
+  <p class="sub">Камень • Ножницы • Бумага — на ставках</p>
+
+  <div class="balance-box">
+    <div class="label">Баланс</div>
+    <div class="value" id="balance">1 000 💎</div>
+  </div>
+
+  <div class="bet-section">
+    <div class="label bet-label">Ставка</div>
+    <div class="bet-row">
+      <button class="bet-btn" onclick="changeBet(-50)">−</button>
+      <div class="bet-display" id="betDisplay">100 💎</div>
+      <button class="bet-btn" onclick="changeBet(50)">+</button>
+    </div>
+    <div class="presets" id="presets"></div>
+  </div>
+
+  <div class="arena">
+    <div class="side">
+      <div class="lbl">Вы</div>
+      <span class="emoji" id="playerEmoji"></span>
+      <div class="name" id="playerName"></div>
+    </div>
+
+    <div class="vs">VS</div>
+
+    <div class="side">
+      <div class="lbl">CPU</div>
+      <span class="emoji" id="cpuEmoji"></span>
+      <div class="name" id="cpuName"></div>
+    </div>
+  </div>
+
+  <div class="result-text" id="resultBox"></div>
+
+  <div class="choices" id="choices"></div>
+
+  <button class="restart" id="restart" onclick="resetGame()">Начать заново (1000 💎)</button>
+
+  <div class="stats">
+    <span class="w">✅ <span id="sW">0</span></span>
+    <span class="lo">❌ <span id="sL">0</span></span>
+    <span class="d">🤝 <span id="sD">0</span></span>
+  </div>
+
+  <div class="history" id="historySection" style="display:none">
+    <div class="title">История</div>
+    <div class="history-list" id="historyList"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
