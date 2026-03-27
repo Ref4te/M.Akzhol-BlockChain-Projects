@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap');
 
+/* Базовые стили */
 * {
   margin: 0;
   padding: 0;
@@ -18,6 +19,7 @@ body {
   gap: 1rem;
 }
 
+/* Заголовки */
 h1 {
   font-size: clamp(2rem, 6vw, 3.5rem);
   font-weight: 700;
@@ -39,6 +41,7 @@ h1 .pink {
   font-size: 0.85rem;
 }
 
+/* Блок баланса */
 .balance-box {
   background: #171c2a;
   border: 1px solid #252a3a;
@@ -63,6 +66,7 @@ h1 .pink {
   text-shadow: 0 0 10px rgba(0, 221, 221, 0.5);
 }
 
+/* Управление ставкой */
 .bet-section {
   display: flex;
   flex-direction: column;
@@ -112,6 +116,7 @@ h1 .pink {
   text-align: center;
 }
 
+/* Пресеты ставок */
 .presets {
   display: flex;
   gap: 0.4rem;
@@ -147,6 +152,7 @@ h1 .pink {
   opacity: 0.85;
 }
 
+/* Игровая арена */
 .arena {
   display: flex;
   align-items: center;
@@ -188,6 +194,7 @@ h1 .pink {
   color: #6b7280;
 }
 
+/* Текст результата */
 .result-text {
   font-size: clamp(1.5rem, 5vw, 2.5rem);
   font-weight: 700;
@@ -217,6 +224,7 @@ h1 .pink {
   margin-top: 0.25rem;
 }
 
+/* Кнопки выбора */
 .choices {
   display: flex;
   gap: 1rem;
@@ -278,6 +286,7 @@ h1 .pink {
   opacity: 0.85;
 }
 
+/* Статистика и история */
 .stats {
   display: flex;
   gap: 1.5rem;
@@ -343,6 +352,7 @@ h1 .pink {
   color: #6b7280;
 }
 
+/* Анимации */
 @keyframes slideIn {
   from {
     opacity: 0;

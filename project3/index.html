@@ -3,28 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>КНБ Арена — Камень Ножницы Бумага на ставках</title>
+  <title>КНБ Арена — Камень Ножницы Бумага на блокчейне</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js" type="text/javascript"></script>
 </head>
 <body>
 
   <h1><span class="cyan">КНБ</span> <span class="pink">АРЕНА</span></h1>
-  <p class="sub">Камень • Ножницы • Бумага — на ставках</p>
+  <p class="sub">Игра на смарт-контракте (BSC Testnet)</p>
+
+  <div class="wallet-section" style="margin-bottom: 1rem;">
+    <button id="connectBtn" class="preset active" style="padding: 10px 20px;">Подключить MetaMask</button>
+    <div id="userAddress" style="font-size: 0.7rem; color: #6b7280; margin-top: 5px;"></div>
+  </div>
 
   <div class="balance-box">
-    <div class="label">Баланс</div>
-    <div class="value" id="balance">1 000 💎</div>
+    <div class="label">Баланс контракта (Резерв)</div>
+    <div class="value" id="contractBalance">0.00 BNB</div>
+    <div class="label" style="margin-top: 10px;">Ваш баланс</div>
+    <div class="value" id="balance" style="font-size: 1.2rem;">0.00 BNB</div>
   </div>
 
   <div class="bet-section">
-    <div class="label bet-label">Ставка</div>
-    <div class="bet-row">
-      <button class="bet-btn" onclick="changeBet(-50)">−</button>
-      <div class="bet-display" id="betDisplay">100 💎</div>
-      <button class="bet-btn" onclick="changeBet(50)">+</button>
+      <div class="label bet-label">Ставка (Gwei)</div>
+      <div class="bet-row">
+        <button class="bet-btn" id="minusBet">−</button>
+        <div class="bet-display" id="betDisplay">1000</div>
+        <button class="bet-btn" id="plusBet">+</button>
+      </div>
+      <div class="presets" id="presets">
+        <button class="preset" data-val="1000">MIN</button>
+        <button class="preset" data-val="10000">10k</button>
+        <button class="preset" data-val="50000">50k</button>
+        <button class="preset" data-val="100000">100k</button>
+      </div>
     </div>
-    <div class="presets" id="presets"></div>
-  </div>
 
   <div class="arena">
     <div class="side">
@@ -36,7 +49,7 @@
     <div class="vs">VS</div>
 
     <div class="side">
-      <div class="lbl">CPU</div>
+      <div class="lbl">CPU (Oracle)</div>
       <span class="emoji" id="cpuEmoji"></span>
       <div class="name" id="cpuName"></div>
     </div>
@@ -46,7 +59,11 @@
 
   <div class="choices" id="choices"></div>
 
-  <button class="restart" id="restart" onclick="resetGame()">Начать заново (1000 💎)</button>
+  <div class="status-msg" id="statusMsg" style="color: #6b7280; font-size: 0.8rem; margin-top: 1rem; text-align: center;">
+    Подключите кошелек, чтобы начать игру
+  </div>
+
+  <button class="restart" id="restart">Начать заново</button>
 
   <div class="stats">
     <span class="w">✅ <span id="sW">0</span></span>
@@ -55,10 +72,11 @@
   </div>
 
   <div class="history" id="historySection" style="display:none">
-    <div class="title">История</div>
+    <div class="title">История транзакций</div>
     <div class="history-list" id="historyList"></div>
   </div>
 
-  <script src="script.js"></script>
+  <script type="module" src="blockchain.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>

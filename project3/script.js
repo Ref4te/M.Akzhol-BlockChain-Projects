@@ -1,208 +1,209 @@
-const E = {
-  rock: "🪨",
-  paper: "📄",
-  scissors: "✂️"
-};
+import { 
+    connectWallet, 
+    sendPlayTransaction, 
+    listenToEvents, 
+    getContractBalance 
+} from './blockchain.js';
 
-const L = {
-  rock: "Камень",
-  paper: "Бумага",
-  scissors: "Ножницы"
-};
+/* Константы и настройки игры */
+const E = { rock: "🪨", scissors: "✂️", paper: "📄" };
+const L = { rock: "Камень", scissors: "Ножницы", paper: "Бумага" };
+const C = ["rock", "scissors", "paper"]; 
 
-const C = ["rock", "paper", "scissors"];
-
-let balance = 1000;
-let bet = 100;
+let userAddress = null;
+let betGwei = 1000; 
 let playing = false;
 let stats = { w: 0, l: 0, d: 0 };
-let history = [];
 
-function $(id) {
-  return document.getElementById(id);
+const $ = (id) => document.getElementById(id);
+
+/* Инициализация приложения */
+async function init() {
+    renderChoices();
+    setupEventListeners();
 }
 
-function fmt(n) {
-  return n.toLocaleString("ru-RU");
+/* 1. Рендер кнопок выбора (Камень, Ножницы, Бумага) */
+function renderChoices() {
+    const container = $("choices");
+    container.innerHTML = "";
+    C.forEach((type, index) => {
+        const btn = document.createElement("button");
+        btn.className = "choice-btn";
+        btn.innerHTML = `<span class="e">${E[type]}</span><span class="l">${L[type]}</span>`;
+        btn.onclick = () => handlePlay(index);
+        container.appendChild(btn);
+    });
 }
 
-function render() {
-  $("balance").textContent = fmt(balance) + " 💎";
-  $("betDisplay").textContent = fmt(bet) + " 💎";
-  $("sW").textContent = stats.w;
-  $("sL").textContent = stats.l;
-  $("sD").textContent = stats.d;
+/* 2. Обновление данных кошелька и баланса контракта */
+async function refreshUserData(delayMs = 0) {
+    if (!userAddress) return;
+    if (delayMs > 0) await new Promise(r => setTimeout(r, delayMs));
 
-  $("restart").style.display = balance <= 0 && !playing ? "block" : "none";
-
-  document.querySelectorAll(".choice-btn").forEach(b => {
-    b.disabled = playing || bet > balance || bet <= 0;
-  });
-
-  renderPresets();
-}
-
-function renderPresets() {
-  const p = $("presets");
-  p.innerHTML = "";
-
-  [50, 100, 250, 500].forEach(v => {
-    const b = document.createElement("button");
-    b.className = "preset" + (bet === v ? " active" : "");
-    b.textContent = v;
-    b.onclick = () => {
-      bet = Math.min(balance, v);
-      render();
-    };
-    p.appendChild(b);
-  });
-
-  const a = document.createElement("button");
-  a.className = "preset allin";
-  a.textContent = "ALL IN";
-  a.onclick = () => {
-    bet = balance;
-    render();
-  };
-  p.appendChild(a);
-}
-
-function changeBet(d) {
-  if (playing) return;
-  bet = Math.max(10, Math.min(balance, bet + d));
-  render();
-}
-
-function getResult(p, c) {
-  if (p === c) return "draw";
-
-  if (
-    (p === "rock" && c === "scissors") ||
-    (p === "scissors" && c === "paper") ||
-    (p === "paper" && c === "rock")
-  ) {
-    return "win";
-  }
-
-  return "lose";
-}
-
-function play(choice) {
-  if (playing || bet > balance || bet <= 0) return;
-
-  playing = true;
-
-  $("playerEmoji").textContent = E[choice];
-  $("playerEmoji").className = "emoji pop-in";
-  $("playerName").textContent = L[choice];
-
-  $("resultBox").innerHTML = "";
-  $("resultBox").className = "result-text";
-
-  $("cpuName").textContent = "";
-
-  render();
-
-  let count = 0;
-
-  const iv = setInterval(() => {
-    const r = C[Math.floor(Math.random() * 3)];
-    $("cpuEmoji").textContent = E[r];
-    count++;
-
-    if (count > 8) {
-      clearInterval(iv);
-
-      const cpu = C[Math.floor(Math.random() * 3)];
-      $("cpuEmoji").textContent = E[cpu];
-      $("cpuEmoji").className = "emoji pop-in";
-      $("cpuName").textContent = L[cpu];
-
-      const res = getResult(choice, cpu);
-      const payout = res === "win" ? bet * 2 : res === "draw" ? bet : 0;
-
-      balance = balance - bet + payout;
-
-      stats.w += res === "win" ? 1 : 0;
-      stats.l += res === "lose" ? 1 : 0;
-      stats.d += res === "draw" ? 1 : 0;
-
-      const payoutDisplay = res === "win" ? bet : res === "draw" ? 0 : -bet;
-
-      history.unshift({
-        p: choice,
-        c: cpu,
-        r: res,
-        pay: payoutDisplay
-      });
-
-      if (history.length > 20) history.pop();
-
-      showResult(res);
-      renderHistory();
-
-      setTimeout(() => {
-        playing = false;
-        render();
-      }, 800);
+    try {
+        const data = await connectWallet(); 
+        $("balance").textContent = `${parseFloat(data.balance).toFixed(6)} BNB`;
+        
+        const cBalance = await getContractBalance();
+        $("contractBalance").textContent = `${parseFloat(cBalance).toFixed(6)} BNB`;
+    } catch (e) {
+        console.error("Ошибка обновления данных:", e);
     }
-  }, 100);
 }
 
-function showResult(res) {
-  const rb = $("resultBox");
-  const txt = res === "win" ? "ПОБЕДА!" : res === "lose" ? "ПРОИГРЫШ" : "НИЧЬЯ";
+/* 3. Настройка обработчиков событий (Wallet, Пресеты, Ставки) */
+function setupEventListeners() {
+    // Подключение кошелька
+    $("connectBtn").onclick = async () => {
+        try {
+            const data = await connectWallet();
+            userAddress = data.address;
+            $("userAddress").textContent = `Wallet: ${userAddress.slice(0,6)}...${userAddress.slice(-4)}`;
+            $("balance").textContent = `${parseFloat(data.balance).toFixed(6)} BNB`;
+            
+            listenToEvents(onGameRequested, onGameFinished);
+            refreshUserData();
+            $("statusMsg").textContent = "Готов к игре!";
+            $("connectBtn").style.display = "none";
+        } catch (e) {
+            $("statusMsg").textContent = "Ошибка подключения";
+        }
+    };
 
-  rb.className = "result-text " + res + " pop-result";
+    const presetButtons = document.querySelectorAll('.preset[data-val]');
+    const STEP = 1000;
 
-  let html = txt;
+    // Выбор фиксированной ставки (пресеты)
+    presetButtons.forEach(btn => {
+        btn.onclick = () => {
+            if (playing) return;
+            presetButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            betGwei = parseInt(btn.getAttribute('data-val'));
+            $("betDisplay").textContent = betGwei.toLocaleString();
+        };
+    });
 
-  if (res === "win") html += '<span class="payout">+' + fmt(bet) + " 💎</span>";
-  if (res === "lose") html += '<span class="payout">-' + fmt(bet) + " 💎</span>";
+    // Ручное увеличение ставки
+    $("plusBet").onclick = () => {
+        if (playing) return;
+        presetButtons.forEach(b => b.classList.remove('active'));
+        betGwei += STEP;
+        $("betDisplay").textContent = betGwei.toLocaleString();
+    };
 
-  rb.innerHTML = html;
-  render();
+    // Ручное уменьшение ставки
+    $("minusBet").onclick = () => {
+        if (playing) return;
+        if (betGwei > 1000) {
+            presetButtons.forEach(b => b.classList.remove('active'));
+            betGwei -= STEP;
+            $("betDisplay").textContent = betGwei.toLocaleString();
+        }
+    };
 }
 
-function renderHistory() {
-  $("historySection").style.display = history.length ? "block" : "none";
+/* 4. Логика начала игры и отправка транзакции */
+async function handlePlay(choiceIndex) {
+    if (!userAddress) return alert("Сначала подключите кошелек!");
+    if (playing) return;
 
-  const hl = $("historyList");
-  hl.innerHTML = "";
+    try {
+        playing = true;
+        setUIState(true);
+        
+        const choiceKey = C[choiceIndex];
+        $("playerEmoji").textContent = E[choiceKey];
+        $("playerEmoji").className = "emoji pop-in";
+        $("playerName").textContent = L[choiceKey];
+        $("cpuEmoji").textContent = "❓";
+        $("resultBox").innerHTML = "";
+        $("statusMsg").textContent = "Подтвердите транзакцию в MetaMask...";
 
-  history.forEach(g => {
-    const d = document.createElement("div");
-    d.className = "history-item";
+        const betInWei = ethers.utils.parseUnits(betGwei.toString(), "gwei");
+        
+        await sendPlayTransaction(choiceIndex, betInWei);
+        
+        refreshUserData(1000);
+        $("statusMsg").textContent = "Ждем оракула (Chainlink VRF)...";
+        startShuffleAnimation();
 
-    const cls = g.pay > 0 ? "pos" : g.pay < 0 ? "neg" : "neu";
-
-    d.innerHTML = `<span>${E[g.p]} vs ${E[g.c]}</span><span class="${cls}">${g.pay > 0 ? "+" : ""}${g.pay} 💎</span>`;
-    hl.appendChild(d);
-  });
+    } catch (e) {
+        console.error(e);
+        $("statusMsg").textContent = "Ошибка транзакции";
+        playing = false;
+        setUIState(false);
+    }
 }
 
-function resetGame() {
-  balance = 1000;
-  bet = 100;
-  stats = { w: 0, l: 0, d: 0 };
-  history = [];
+/* 5. Завершение игры и обработка результата от блокчейна */
+function onGameFinished(data) {
+    if (!playing) return; 
+    stopShuffleAnimation();
+    
+    const cpuChoiceKey = C[data.casinoChoice];
+    $("cpuEmoji").textContent = E[cpuChoiceKey];
+    $("cpuEmoji").className = "emoji pop-in";
+    $("cpuName").textContent = L[cpuChoiceKey];
 
-  $("playerEmoji").textContent = "";
-  $("playerName").textContent = "";
-  $("cpuEmoji").textContent = "";
-  $("cpuName").textContent = "";
-  $("resultBox").innerHTML = "";
+    let res = "draw";
+    if (data.result === "You Win!") {
+        res = "win"; stats.w++;
+    } else if (data.result === "Lose") {
+        res = "lose"; stats.l++;
+    } else {
+        stats.d++;
+    }
 
-  renderHistory();
-  render();
+    showResult(res, data.payout);
+    updateStats();
+    
+    refreshUserData(15000); 
+    
+    playing = false;
+    setUIState(false);
+    $("statusMsg").textContent = "Раунд завершен!";
 }
 
-C.forEach(c => {
-  const b = document.createElement("button");
-  b.className = "choice-btn";
-  b.innerHTML = `<span class="e">${E[c]}</span><span class="l">${L[c]}</span>`;
-  b.onclick = () => play(c);
-  $("choices").appendChild(b);
-});
+/* Вспомогательные функции UI и анимаций */
 
-render();
+// Блокировка интерфейса
+function setUIState(isDisabled) {
+    const btns = document.querySelectorAll('.choice-btn, .bet-btn, .preset');
+    btns.forEach(b => b.disabled = isDisabled);
+}
+
+// Анимация перемешивания выбора компьютера
+let shuffleInterval;
+function startShuffleAnimation() {
+    shuffleInterval = setInterval(() => {
+        const r = C[Math.floor(Math.random() * 3)];
+        $("cpuEmoji").textContent = E[r];
+    }, 120);
+}
+
+function stopShuffleAnimation() { clearInterval(shuffleInterval); }
+
+// Отображение текста результата
+function showResult(res, payout) {
+    const rb = $("resultBox");
+    const txt = res === "win" ? "ПОБЕДА!" : res === "lose" ? "ПРОИГРЫШ" : "НИЧЬЯ";
+    rb.className = "result-text " + res + " pop-result";
+    const payoutHtml = parseFloat(payout) > 0 ? `<div class="payout">+${payout} BNB</div>` : "";
+    rb.innerHTML = `${txt}${payoutHtml}`;
+}
+
+// Обновление счетчиков побед/поражений
+function updateStats() {
+    $("sW").textContent = stats.w;
+    $("sL").textContent = stats.l;
+    $("sD").textContent = stats.d;
+}
+
+// Логирование запроса к блокчейну
+function onGameRequested(data) {
+    console.log("Запрос зафиксирован в блокчейне ID:", data.requestId);
+}
+
+init();
