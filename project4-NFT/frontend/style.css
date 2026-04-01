@@ -1,0 +1,170 @@
+/* Основной фон в стиле ангара */
+body {
+    background-color: #1a1a1a;
+    color: #eeeeee;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+    margin: 0;
+}
+
+/* Стилизация кнопок управления */
+button {
+    background: linear-gradient(180deg, #4da832 0%, #2d661e 100%);
+    border: 1px solid #1e4d10;
+    border-radius: 4px;
+    color: white;
+    padding: 12px 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.1s, filter 0.2s;
+    margin: 10px;
+    box-shadow: 0 4px 0 #15360b;
+}
+
+button:hover {
+    filter: brightness(1.1);
+}
+
+button:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #15360b;
+}
+
+/* Контейнер для счетчика */
+.stats p {
+    font-size: 1.2rem;
+    background: #262626;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border-left: 5px solid #4da832;
+    margin-bottom: 20px;
+}
+
+#supply {
+    color: #4da832;
+    font-weight: bold;
+}
+
+/* Сетка для NFT карточек */
+#nfts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 30px;
+}
+
+/* Дизайн самой карточки пушки */
+.nft-card {
+    background: #262626;
+    border: 2px solid #333;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: 0.3s;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.nft-card:hover {
+    border-color: #4da832;
+    transform: translateY(-5px);
+    box-shadow: 0 0 15px rgba(77, 168, 50, 0.3);
+}
+
+/* Заголовок пушки */
+.nft-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.2rem;
+    color: #4da832;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Изображение пушки */
+.nft-card img {
+    border-radius: 5px;
+    background: #1a1a1a;
+    padding: 10px;
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+/* Описание */
+.desc {
+    font-size: 0.85rem;
+    color: #aaa;
+    line-height: 1.4;
+    margin: 10px 0 15px 0;
+    text-align: left;
+}
+
+/* Сетка характеристик внутри карточки */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.attr-box {
+    background: #1a1a1a;
+    padding: 6px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border-left: 3px solid #555;
+}
+
+.attr-box.boost {
+    border-left-color: #4da832; /* Зеленый для числовых данных */
+}
+
+.label {
+    font-size: 0.65rem;
+    color: #777;
+    text-transform: uppercase;
+}
+
+.value {
+    font-size: 0.8rem;
+    color: #eee;
+    font-weight: bold;
+}
+
+/* Ссылка на Wiki */
+.wiki-link {
+    display: inline-block;
+    color: #4da832;
+    text-decoration: none;
+    font-size: 0.8rem;
+    border: 1px solid #4da832;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: 0.2s;
+    align-self: center;
+    margin-top: auto;
+}
+
+.wiki-link:hover {
+    background: #4da832;
+    color: #fff;
+}
+
+/* Состояние "пусто" */
+#nfts:empty::after {
+    content: "Нет купленных пушек в гараже";
+    color: #555;
+    grid-column: 1 / -1;
+    font-style: italic;
+    font-size: 1.1rem;
+}

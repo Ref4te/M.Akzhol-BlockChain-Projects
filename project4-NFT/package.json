@@ -1,0 +1,17 @@
+{
+  "name": "project4-NFT",
+  "version": "1.0.0",
+  "type": "module",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^4.0.6",
+    "@nomicfoundation/hardhat-verify": "^3.0.12",
+    "@types/node": "^22.19.15",
+    "ethers": "^6.16.0",
+    "hardhat": "^3.2.0",
+    "typescript": "~5.8.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.9.6",
+    "dotenv": "^17.3.1"
+  }
+}
