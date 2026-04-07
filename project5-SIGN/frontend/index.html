@@ -1,20 +1,75 @@
 <!DOCTYPE html>
-<html>
-<body>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DocSign dApp</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
 
-  <button id="connect">Connect</button>
+  <div class="max-w-4xl mx-auto space-y-8">
+    <div class="flex justify-between items-center bg-white p-6 rounded-xl shadow-sm">
+      <h1 class="text-2xl font-bold text-gray-800">DocSign</h1>
+      <div id="walletSection">
+        <button id="connectBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition">
+          Подключить кошелек
+        </button>
+      </div>
+    </div>
 
-  <input type="file" id="fileInput">
-  <input id="signers" value="0x0eC482e4c53D1fEFad01cD7C03D5A5340F466b12,0x9cfB224D938666dB873661dC8cAe5f5EE82550C1,0xe2Ae5820DFEcA78292Cf2faD98E39A09a64cE18c,0x280Fb1FB37Af6CC3d7ddbC74973cdda3D75946E8">
+    <div class="grid md:grid-cols-2 gap-8">
+      <div class="bg-white p-6 rounded-xl shadow-md space-y-4">
+        <h2 class="text-xl font-semibold border-b pb-2">Создать документ</h2>
+        
+        <div class="space-y-2">
+          <label class="block text-sm font-medium text-gray-600">Файл (для хеша)</label>
+          <input type="file" id="fileInput" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+        </div>
 
-  <button id="create">Create</button>
+        <div class="space-y-2">
+          <label class="block text-sm font-medium text-gray-600">Подписанты</label>
+          <div class="flex gap-2">
+            <input id="signerInput" type="text" placeholder="0x..." class="flex-1 border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <button id="addSigner" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">+</button>
+          </div>
+          <ul id="signerList" class="mt-2 space-y-1 max-h-32 overflow-y-auto">
+            </ul>
+        </div>
 
-  <input id="docId">
-  <button id="sign">Sign</button>
+        <button id="createBtn" class="w-full bg-indigo-600 text-white py-2 rounded-lg font-medium hover:bg-indigo-700 transition">Опубликовать в блокчейн</button>
+      </div>
 
-  <p id="status"></p>
+      <div class="bg-white p-6 rounded-xl shadow-md space-y-4">
+        <h2 class="text-xl font-semibold border-b pb-2">Подписать документ</h2>
+        
+        <div class="space-y-2">
+          <label class="block text-sm font-medium text-gray-600">ID документа</label>
+          <div class="flex gap-2">
+            <input id="docIdInput" type="number" placeholder="Напр: 1" class="flex-1 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <button id="checkDocBtn" class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">🔍</button>
+          </div>
+        </div>
+
+        <div id="myStatusBadge" class="hidden p-3 rounded-lg text-center font-bold text-sm">
+          Ваш статус: <span id="myStatusText">---</span>
+        </div>
+
+        <div id="docDetails" class="hidden space-y-3 bg-gray-50 p-3 rounded-lg">
+          <p class="text-xs break-all text-gray-500">Хеш: <span id="displayHash"></span></p>
+          <p class="text-sm font-medium">Прогресс: <span id="signProgress">0/0</span></p>
+          <div class="w-full bg-gray-200 rounded-full h-2">
+            <div id="progressBar" class="bg-blue-600 h-2 rounded-full" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <button id="signBtn" class="w-full bg-emerald-600 text-white py-2 rounded-lg font-medium hover:bg-emerald-700 transition disabled:opacity-50" disabled>Подписать</button>
+      </div>
+    </div>
+
+    <p id="globalStatus" class="text-center text-sm font-medium text-gray-600"></p>
+  </div>
 
   <script type="module" src="app.js"></script>
-
 </body>
 </html>
