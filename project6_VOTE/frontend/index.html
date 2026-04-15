@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Система голосования (dApp)</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; }
+        section { border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px; }
+        .proposal-item { border: 1px solid #ddd; padding: 10px; margin: 10px 0; border-radius: 4px; }
+        .status-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #333; color: #fff; padding: 10px; text-align: center; }
+        input { padding: 8px; width: 250px; margin-bottom: 10px; }
+        button { padding: 8px 15px; cursor: pointer; background-color: #007bff; color: white; border: none; border-radius: 4px; }
+        button:hover { background-color: #0056b3; }
+        .info-label { font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h1>Система голосования</h1>
+
+    <section>
+        <button id="connectBtn">Подключить кошелек</button>
+        <p>Ваш аккаунт: <span id="account" class="info-label">-</span></p>
+        <p>Адрес контракта: <span id="contractAddressLabel" class="info-label">-</span></p>
+        <p>Председатель: <span id="chairperson" class="info-label">-</span></p>
+    </section>
+
+    <section>
+        <h2>Ваш статус</h2>
+        <button id="loadVoterBtn">Обновить данные</button>
+        <p>Вес голоса: <span id="voterWeight">0</span></p>
+        <p>Проголосовал: <span id="voterVoted">Нет</span></p>
+        <p>Делегировано: <span id="voterDelegate">-</span></p>
+        <p>Индекс вашего голоса: <span id="voterVote">-</span></p>
+    </section>
+
+    <section>
+        <h2>Действия</h2>
+        <div>
+            <h3>Дать право голоса (только председатель)</h3>
+            <input type="text" id="voterAddress" placeholder="0x... адрес избирателя">
+            <button id="giveRightBtn">Выдать право</button>
+        </div>
+        <hr>
+        <div>
+            <h3>Делегировать голос</h3>
+            <input type="text" id="delegateAddress" placeholder="0x... адрес делегата">
+            <button id="delegateBtn">Делегировать</button>
+        </div>
+        <hr>
+        <div>
+            <h3>Проголосовать</h3>
+            <input type="number" id="proposalIndex" placeholder="Индекс предложения (0, 1...)">
+            <button id="voteBtn">Голосовать</button>
+        </div>
+    </section>
+
+    <section>
+        <h2>Список предложений</h2>
+        <button id="loadProposalsBtn">Загрузить предложения</button>
+        <div id="proposalsList">
+            </div>
+    </section>
+
+    <section>
+        <h2>Победитель</h2>
+        <button id="winnerBtn">Показать победителя</button>
+        <p>Название: <span id="winnerResult" class="info-label">-</span></p>
+        <p>Индекс: <span id="winnerIndex" class="info-label">-</span></p>
+    </section>
+
+    <div class="status-bar">
+        Статус: <span id="status">Ожидание подключения...</span>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
