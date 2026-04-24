@@ -113,6 +113,8 @@ h1 {
   flex-direction: column;
   gap: 24px;
   min-width: 0;
+  max-width: 100%;
+  position: relative;
 }
 
 .layout-left {
@@ -121,6 +123,7 @@ h1 {
 
 .layout-right {
   flex: 1.4 1 520px;
+  isolation: isolate;
 }
 
 @media (max-width: 968px) {
@@ -312,8 +315,8 @@ button.btn-secondary:hover {
 
 .proposal-item:hover {
   border-color: var(--primary-color);
-  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2);
-  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.18);
+  transform: none;
 }
 
 .proposal-item.winner-card {
