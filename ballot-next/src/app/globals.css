@@ -100,9 +100,10 @@ h1 {
 }
 
 .layout-grid {
-  display: grid;
-  grid-template-columns: 1fr 1.5fr;
-  gap: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-start;
   margin-bottom: 24px;
 }
 
@@ -114,9 +115,17 @@ h1 {
   min-width: 0;
 }
 
+.layout-left {
+  flex: 1 1 360px;
+}
+
+.layout-right {
+  flex: 1.4 1 520px;
+}
+
 @media (max-width: 968px) {
   .layout-grid {
-    grid-template-columns: 1fr;
+    gap: 16px;
   }
 }
 
@@ -421,8 +430,7 @@ hr {
 
 @media (max-width: 1024px) {
   .layout-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 16px;
   }
   
   .header-grid {
