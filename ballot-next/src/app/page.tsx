@@ -39,7 +39,9 @@ export default function Home() {
             <span className="label">Статус:</span>{" "}
             <span className="value">
               {voterData?.voted === "Aa"
-                ? `Голосовал${voterData?.vote && voterData.vote !== "-" ? ` (#${Number(voterData.vote) + 1})` : ""}`
+                ? voterData?.delegate && voterData.delegate !== "-"
+                  ? "Передал голос"
+                  : `Голосовал${voterData?.vote && voterData.vote !== "-" ? ` (#${Number(voterData.vote) + 1})` : ""}`
                 : "Нет"}
             </span>
           </div>
