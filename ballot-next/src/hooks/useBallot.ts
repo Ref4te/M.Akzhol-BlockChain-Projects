@@ -35,9 +35,10 @@ export function useBallot(
   });
 
   const nameMap: Record<string, string> = {
-    "Proposal 1": "Toktar Aubakirov",
-    "Proposal 2": "Talgat Musabayev",
-    "Proposal 3": "Aydyn Aimbetov"
+    "FC Barcelona": "FC Barcelona",
+    "Real Madrid": "Real Madrid",
+    "Villarreal CF": "Villarreal CF",
+    "Atletico Madrid": "Atletico Madrid"
   };
 
   function decodeBytes32(value: string): string {
