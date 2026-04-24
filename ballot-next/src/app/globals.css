@@ -155,6 +155,7 @@ section {
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(99, 102, 241, 0.1);
   backdrop-filter: blur(10px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
 }
 
 section:hover {
@@ -185,6 +186,30 @@ h3 {
   flex-direction: column;
   gap: 16px;
   margin-bottom: 8px;
+}
+
+.action-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.action-hint {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+.action-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.action-row input {
+  min-width: 0;
+  width: 100%;
 }
 
 input {
@@ -246,6 +271,7 @@ button.btn-secondary:hover {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
   margin-top: 20px;
+  max-width: 100%;
 }
 
 .proposal-item {
@@ -405,6 +431,10 @@ hr {
   
   .proposals-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .action-row {
+    grid-template-columns: 1fr;
   }
 }
 

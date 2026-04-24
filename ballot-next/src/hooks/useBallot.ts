@@ -49,6 +49,18 @@ export function useBallot(
     }
   }
 
+  function normalizeErrorMessage(error: unknown): string {
+    if (!(error instanceof Error)) return "Ошибка транзакции";
+
+    const raw = error.message.toLowerCase();
+
+    if (raw.includes("already voted")) return "Вы уже голосовали (already voted)";
+    if (raw.includes("has no right to vote")) return "У адреса нет права голоса";
+    if (raw.includes("chairperson")) return "Только председатель может выполнить это действие";
+
+    return error.message;
+  }
+
   async function loadChairperson(): Promise<void> {
     if (!contract) return;
     const chair = await contract.chairperson();
@@ -139,12 +151,16 @@ export function useBallot(
       return;
     }
 
-    setStatus("Отправка транзакции ... ");
-    const tx = await contract.giveRightToVote(address);
-    await tx.wait();
+    try {
+      setStatus("Отправка транзакции ... ");
+      const tx = await contract.giveRightToVote(address);
+      await tx.wait();
 
-    setStatus("Право голоса выдано");
-    await loadAll();
+      setStatus("Право голоса выдано");
+      await loadAll();
+    } catch (error) {
+      setStatus(normalizeErrorMessage(error));
+    }
   }
 
   async function delegateVote(address: string): Promise<void> {
@@ -155,23 +171,31 @@ export function useBallot(
       return;
     }
 
-    setStatus("Отправка транзакции ... ");
-    const tx = await contract.delegate(address);
-    await tx.wait();
+    try {
+      setStatus("Отправка транзакции ... ");
+      const tx = await contract.delegate(address);
+      await tx.wait();
 
-    setStatus("Голос делегирован");
-    await loadAll();
+      setStatus("Голос делегирован");
+      await loadAll();
+    } catch (error) {
+      setStatus(normalizeErrorMessage(error));
+    }
   }
 
   async function voteForProposal(index: number): Promise<void> {
     if (!contract) return;
 
-    setStatus("Отправка транзакции ... ");
-    const tx = await contract.vote(index);
-    await tx.wait();
+    try {
+      setStatus("Отправка транзакции ... ");
+      const tx = await contract.vote(index);
+      await tx.wait();
 
-    setStatus("Голос учтен");
-    await loadAll();
+      setStatus("Голос учтен");
+      await loadAll();
+    } catch (error) {
+      setStatus(normalizeErrorMessage(error));
+    }
   }
 
   useEffect(() => {
