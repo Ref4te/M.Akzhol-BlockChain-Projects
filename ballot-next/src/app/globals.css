@@ -23,6 +23,7 @@ body {
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
+  font-size: 17px;
 }
 
 h1 {
@@ -110,6 +111,7 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  min-width: 0;
 }
 
 @media (max-width: 968px) {
@@ -160,7 +162,7 @@ section:hover {
 }
 
 h2 {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 700;
   margin-top: 0;
   border-bottom: 2px solid var(--card-border);
@@ -170,7 +172,7 @@ h2 {
 }
 
 h3 {
-  font-size: 0.95rem;
+  font-size: 1.15rem;
   font-weight: 600;
   color: var(--text-muted);
   margin-bottom: 12px;
@@ -189,7 +191,7 @@ input {
   padding: 14px 16px;
   border: 2px solid var(--card-border);
   border-radius: 10px;
-  font-size: 14px;
+  font-size: 17px;
   background: rgba(15, 23, 42, 0.5);
   color: var(--text-main);
   transition: all 0.3s ease;
@@ -214,7 +216,7 @@ button:not(.vote-button) {
   border-radius: 10px;
   padding: 12px 20px;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 19px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2);
@@ -241,7 +243,7 @@ button.btn-secondary:hover {
 
 .proposals-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
   margin-top: 20px;
 }
@@ -293,7 +295,7 @@ button.btn-secondary:hover {
 }
 
 .proposal-index {
-  font-size: 12px;
+  font-size: 15px;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.4px;
@@ -304,7 +306,7 @@ button.btn-secondary:hover {
   border: 1px solid rgba(16, 185, 129, 0.65);
   color: #a7f3d0;
   border-radius: 999px;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 700;
   padding: 3px 9px;
   text-transform: uppercase;
@@ -312,7 +314,7 @@ button.btn-secondary:hover {
 }
 
 .proposal-title {
-  font-size: 18px;
+  font-size: 28px;
   font-weight: 700;
   color: var(--text-main);
   line-height: 1.35;
@@ -322,21 +324,22 @@ button.btn-secondary:hover {
 
 .proposal-votes {
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: 22px;
   margin-bottom: 10px;
 }
 
 .proposal-votes strong {
   color: var(--text-main);
-  font-size: 16px;
+  font-size: 24px;
 }
 
 .vote-button {
   margin-top: auto;
   width: 100%;
   background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-  padding: 10px 16px;
-  font-size: 13px;
+  padding: 14px 18px;
+  font-size: 20px;
+  font-weight: 700;
 }
 
 .vote-button:hover {
@@ -355,7 +358,7 @@ button.btn-secondary:hover {
 
 p {
   margin: 10px 0;
-  font-size: 14px;
+  font-size: 20px;
   color: var(--text-main);
   line-height: 1.6;
 }
@@ -376,7 +379,7 @@ hr {
   color: #f1f5f9;
   padding: 16px 20px;
   text-align: center;
-  font-size: 13px;
+  font-size: 17px;
   box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.5), 0 -2px 16px rgba(99, 102, 241, 0.1);
   z-index: 1000;
   border-top: 1px solid var(--card-border);
@@ -429,6 +432,18 @@ hr {
   .proposals-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .proposal-title {
+    font-size: 22px;
+  }
+
+  .proposal-votes {
+    font-size: 18px;
+  }
+
+  .proposal-votes strong {
+    font-size: 20px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -446,5 +461,17 @@ hr {
   
   .header-grid .label {
     min-width: 60px;
+  }
+
+  .proposal-title {
+    font-size: 20px;
+  }
+
+  .proposal-votes {
+    font-size: 16px;
+  }
+
+  .proposal-votes strong {
+    font-size: 18px;
   }
 }
