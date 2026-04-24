@@ -33,9 +33,16 @@ export default function Home() {
         <div className="header-grid">
           <div><span className="label">Аккаунт:</span> <span className="value">{account ? `${account.slice(0, 12)}...` : "-"}</span></div>
           <div><span className="label">Контракт:</span> <span className="value">{contractAddress ? `${contractAddress.slice(0, 12)}...` : "-"}</span></div>
-          <div><span className="label">Результаты:</span> <span className="value">{chairperson ? `${chairperson.slice(0, 12)}...` : "-"}</span></div>
+          <div><span className="label">Представитель:</span> <span className="value">{chairperson ? `${chairperson.slice(0, 12)}...` : "-"}</span></div>
           <div><span className="label">Ваш вес:</span> <span className="value">{voterData?.weight ?? "0"}</span></div>
-          <div><span className="label">Статус:</span> <span className="value">{voterData?.voted === "Aa" ? "Голосовал" : "Нет"}</span></div>
+          <div>
+            <span className="label">Статус:</span>{" "}
+            <span className="value">
+              {voterData?.voted === "Aa"
+                ? `Голосовал${voterData?.vote && voterData.vote !== "-" ? ` (#${Number(voterData.vote) + 1})` : ""}`
+                : "Нет"}
+            </span>
+          </div>
           <div><span className="label">Делегат:</span> <span className="value">{voterData?.delegate ? `${voterData.delegate.slice(0, 10)}...` : "-"}</span></div>
         </div>
         <button id="loadVoterBtn" onClick={loadAll}>Обновить информацию</button>
