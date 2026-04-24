@@ -24,7 +24,7 @@ export default function Home() {
 
   return (
     <main className="app-shell">
-      <h1>Голосование</h1>
+      <h1>Система голосования</h1>
 
       <section className="header-section">
         <div className="header-actions">
