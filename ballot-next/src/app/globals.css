@@ -249,7 +249,7 @@ button.btn-secondary:hover {
 .proposal-item {
   background: linear-gradient(135deg, #0f172a 0%, #1a1f3a 100%);
   border: 2px solid var(--card-border);
-  padding: 18px;
+  padding: 18px 18px 16px;
   border-radius: 14px;
   font-size: 14px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -258,8 +258,8 @@ button.btn-secondary:hover {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  min-height: 160px;
-  justify-content: space-between;
+  gap: 10px;
+  min-height: 170px;
 }
 
 .proposal-item::before {
@@ -281,24 +281,58 @@ button.btn-secondary:hover {
 
 .proposal-item.winner-card {
   border: 2px solid var(--success-color);
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
-  box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15);
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(16, 185, 129, 0.06) 100%);
+  box-shadow: 0 12px 34px rgba(16, 185, 129, 0.25);
+}
+
+.proposal-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.proposal-index {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.proposal-leader-badge {
+  background: rgba(16, 185, 129, 0.18);
+  border: 1px solid rgba(16, 185, 129, 0.65);
+  color: #a7f3d0;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
 }
 
 .proposal-title {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--text-main);
-  margin-bottom: 8px;
+  line-height: 1.35;
+  margin-bottom: 4px;
+  word-break: break-word;
 }
 
 .proposal-votes {
   color: var(--text-muted);
-  font-size: 13px;
-  margin-bottom: 12px;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.proposal-votes strong {
+  color: var(--text-main);
+  font-size: 16px;
 }
 
 .vote-button {
+  margin-top: auto;
   width: 100%;
   background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
   padding: 10px 16px;

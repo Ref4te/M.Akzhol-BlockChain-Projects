@@ -6,7 +6,6 @@ import { CONTRACT_ADDRESS } from "@/lib/contract";
 
 import ActionsPanel from "@/components/ActionsPanel";
 import ProposalsList from "@/components/ProposalsList";
-import WinnerCard from "@/components/WinnerCard";
 
 export default function Home() {
   const { signer, contract, account, status, setStatus, connectWallet } = useWallet();
@@ -14,8 +13,6 @@ export default function Home() {
   const {
     chairperson,
     proposals,
-    winnerName,
-    winnerIndex,
     voterData,
     loadAll,
     giveRightToVote,
@@ -53,11 +50,6 @@ export default function Home() {
             <h2>📊 Предложения</h2>
             <button id="loadProposalsBtn" onClick={loadAll} className="btn-secondary">Обновить список</button>
             <ProposalsList proposals={proposals} onVote={voteForProposal} />
-          </section>
-
-          <section>
-            <h2>🏆 Лидер</h2>
-            <WinnerCard winnerIndex={winnerIndex} winnerName={winnerName} />
           </section>
         </div>
       </div>
